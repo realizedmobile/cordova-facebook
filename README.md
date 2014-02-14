@@ -1,19 +1,8 @@
 cordova-facebook
 ================
-
-[Cordova](http://cordova.apache.org/) plugin that handles Facebook integration for mobile (iOS and Android) apps.
-
-Project uses mobile native platform FacebookSDK for iOS and Android to utilize basic operations for a mobile app that uses Cordova. 
-
-We also provide [TypeScript](http://www.typescriptlang.org/) source file together with the JavaScript for the client side with this plugin.
-
+Forked from [Here](https://github.com/ccsoft/cordova-facebook).
 ##Why?
-- Why do we implement another plugin since there is already an official [phonegap-facebook-plugin](https://github.com/phonegap/phonegap-facebook-plugin)?
-	1. As of today (16.01.2014), [official cordova facebook plugin](https://github.com/phonegap/phonegap-facebook-plugin) project on GitHub has 985 stars (including mine), 118 watchers, 218 open issues, 29 pull requests and 5 branches.
-	2. Last commit as of today to master branch was 3 months ago, we don't have time to wait for fixes and new updates.
-	3. Official plugin tries to retain the same interface for the Facebook JavaScript SDK, which we believe an unnecessary burden. 
-	4. We have some live apps that uses the official plugin, and we are scared to update our app to new Cordova version, scared to break things in Facebook side. 
-	5. Well, it was not that hard to do it, so we did it.
+We needed an automated build script for multiple project we have. We just modified config.xml to take Facebook App Id and App Name.
 
 ##Versions
 We support only Cordova version > 3.0
@@ -27,11 +16,9 @@ We currently tested FacebookSDK for following platforms and versions:
 ##Prerequisites
 
 ###iOS
-Download the latest [FacebookSDK](https://developers.facebook.com/docs/ios/), and follow the [getting started guideline](https://developers.facebook.com/docs/ios/getting-started/). 
-
-The guideline is well documented and people at Facebook may change stuff in the future, so we stick to that instead of fancy cordova plugin hacks (well, cordova people also modify plugin flow too).
-
+No Special instruction for iOS, just install the plugin with app_id and app_name
 ###Android
+Not fully automated yet. 
 
 Unlike iOS, Android [getting started guideline](https://developers.facebook.com/docs/android/getting-started/) is pretty long and scary. 
 For Android we rely on [Android Simple Facebook](https://github.com/sromku/android-simple-facebook) by [Roman Kushnarenko](https://github.com/sromku), many thanks for that project. 
@@ -46,32 +33,13 @@ Here is what to do for Android before installing our plugin.
     ![Screenshot](https://raw.github.com/sromku/android-simple-facebook/master/Refs/reference_to_sdk.png)
 
 ##Installing the plugin
-To add this plugin just type:
-```cordova plugin add https://github.com/ccsoft/cordova-facebook.git```
+To add this plugin just type (without brackets):
+```cordova plugin add https://github.com/realizedmobile/cordova-facebook --variable APP_ID=[app_id] --variable APP_NAME=[app_name]```
 
 To remove this plugin type:
 ```cordova plugin remove com.ccsoft.plugin.CordovaFacebook```
 
 ##Usage
-Add the following block to your AppDelegate.m
-
-	// During the Facebook login flow, your app passes control to the Facebook iOS app or Facebook in a mobile browser.
-	// After authentication, your app will be called back with the session information.
-	- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  	sourceApplication:(NSString *)sourceApplication
-         	annotation:(id)annotation
-	{
-    	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                          url, @"url", sourceApplication, @"sourceApplication", @"NO", @"success", nil];
-    	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"CordovaPluginOpenURLNotification" object:self userInfo:dict]];
-    
-    	NSString* success = [dict objectForKey:@"success"];
-    	return ![success isEqualToString:@"NO"];
-	}
-
-Then, in your js file (probably in index.js)
-
 		
 	// Get a reference to the plugin first
     var plugin = new CC.CordovaFacebook();
